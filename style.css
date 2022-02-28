@@ -1,0 +1,21 @@
+body{
+    margin:0%
+}
+
+header{
+    height: 300px;
+    text-align: center;
+    padding-top: 40px;
+}
+.main-title{
+    font-size: 60px;
+}
+
+.page-content img{
+    width: 500px;
+    height: 800px;
+}
+
+.page-content{
+    
+}
