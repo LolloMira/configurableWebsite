@@ -1,3 +1,10 @@
+function initWebsite() {
+    loadSettings();
+    loadPages();
+}
+
+
+
 function loadSettings() {
 fetch("./assets/settings/setting.json")
     .then(resp => resp.json())
@@ -8,52 +15,130 @@ fetch("./assets/settings/setting.json")
 function loadPages() {
     fetch("./assets/settings/pages.json")
         .then(resp_pages => resp_pages.json())
-        .then(generatePageContent)
+        .then(configurePages)
         .catch(error => console.log(error));
-    }
+}
 
-function generateSettings(data){ 
-    const header = document.getElementById('head');
-    header.style.backgroundImage = "url("+ data.headerImage + ")";
+function setDocumentTitle(title) {
+    document.title = title; 
+}
+
+function setTheme(theme) {
     const body = document.getElementsByTagName('body')[0];
-    if (data.theme === "light") {
-        body.style.backgroundColor = "white"
-    }
+    
+    const styleLink = document.getElementById('style');
+    styleLink.setAttribute('href', (theme + ".css"))
+}
 
-    if (data.theme === "dark") {
-        body.style.backgroundColor = "black"
-    }
 
-    document.title = data.title; 
-
+function setHeaderTitle(title) {
     const pageTitle = document.getElementsByClassName('main-title')[0];
-    const titleNode = document.createTextNode(data.title);
+    const titleNode = document.createTextNode(title);
     pageTitle.appendChild(titleNode);
+}
 
-    for (const link of data.footerLinks) {
+function setHeaderBackground(imgUrl) {
+    const header = document.getElementById('head');
+    header.style.backgroundImage = "url("+ imgUrl + ")";
+}
+
+function setFooterLinks(linkArray) {
+    for (const link of linkArray) {
         const footerDiv = document.getElementsByClassName('link-container')[0];
         const footerLink1 = document.createElement('a');
         footerLink1.href = link.url;
         footerLink1.text = link.text;
         footerDiv.appendChild(footerLink1)
     }
-
-    
 }
 
-function generatePageContent(data){
-    const pageContentDiv = document.getElementsByClassName('page-content')[0];
-    const pageContent = data[0];
-    for (const element of pageContent.content) {
-        const newElement = document.createElement(element.tag);
-        if (element.text) {
-            const node = document.createTextNode(element.text);
-            newElement.appendChild(node);
-        }
-        
-        if (element.url) {
-            newElement.src = element.url;
-        }
-        pageContentDiv.appendChild(newElement);
+function generateSettings(data){ 
+    setDocumentTitle(data.title)
+    setTheme(data.theme)
+    setHeaderTitle(data.title)
+    setHeaderBackground(data.headerImage)
+    setFooterLinks(data.footerLinks)
+}
+
+function configurePages(pageSetting) {
+    setNavMenu(pageSetting)
+
+
+    const paramsString = window.location.search;
+    const params = new URLSearchParams(paramsString);
+    let id = params.get('id');
+    if(!id){
+        id = "p1"
     }
+    const page = pageSetting.filter(p => p.id === id)[0];
+    generatePageContent(page);
+}
+
+function generatePageContent(page){
+
+    const container = document.getElementById('page-container');
+    for (const element of page.content) {
+        const newElement = createHtmlElement(element)
+        container.appendChild(newElement);
+    }
+}
+
+function setNavMenu(pageSetting) {
+    const navMenu = document.getElementById('nav-menu');
+    for (const page of pageSetting) {
+        const a = document.createElement('a');
+        const node = document.createTextNode(page.name);
+        a.appendChild(node);
+        //const baseUrl = window.location.toString().split("=")[0];
+        //const url = baseUrl + "=" + page.id;
+        const url = "/?id=" + page.id;
+        console.log(url);
+        a.href = url;
+        navMenu.appendChild(a); 
+    }
+}
+
+function createHtmlElement(elementSetting){
+    switch (elementSetting.tag) {
+        case "h2":
+            return createH2(elementSetting)
+        case "p":
+            return createP(elementSetting)
+        case "img":
+            return createIMG(elementSetting)
+        case "div":
+            return createDIV(elementSetting)
+        default:
+            break;
+    }
+}
+
+function createH2(elementSetting){
+    const h2 = document.createElement("h2");
+    const node = document.createTextNode(elementSetting.text);
+    h2.appendChild(node);
+    return h2;
+}
+
+function createP(elementSetting){
+    const p = document.createElement("p");
+    p.className="single-par";
+    const node = document.createTextNode(elementSetting.text);
+    p.appendChild(node);
+    return p;
+}
+
+function createIMG(elementSetting){
+    const img = document.createElement("img");
+    img.src = elementSetting.url;
+    return img;
+}
+
+function createDIV(elementSetting){
+    const div = document.createElement("div");
+    for (const element of elementSetting.children) {
+        const htmlElement = createHtmlElement(element);
+        div.appendChild(htmlElement);
+    }
+    return div;
 }

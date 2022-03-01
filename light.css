@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400&display=swap');
+
+html{
+    background-color: rgb(190, 77, 201);
+}
+
+body{
+    margin:0%;
+}
+
+p, #nav-menu a, .link-container a{
+    color: black;
+    font-family: 'Arimo', sans-serif;
+    font-size: large;
+}
+
+h2{
+    color: black;
+    font-family: 'Lobster', cursive;
+    text-align: center;
+}
+
+h1{
+    margin: 0%;
+}
+
+header{
+    height: 250px;
+    text-align: center;
+    padding-top: 30px;
+    background-repeat: round;
+}
+.main-title{
+    font-size: 400%;
+    font-family: 'Lobster', cursive;
+    text-shadow: 2px 2px white;
+}
+
+.page-content img{
+    width: 50%;
+    height: 50%;
+    border: 7px dotted;
+    border-color: black ;
+}
+
+#nav-menu{
+    border: 2px solid rgb(173, 13, 212);
+    border-radius: 15px;
+    position: relative;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(255, 149, 215);
+    margin-top: 30px;
+}
+
+#nav-menu a{
+    margin-left: 10px;
+    margin-right: 10px;
+    text-decoration: none;
+    padding: 10px 10px;
+    display: inline-block;
+    text-transform: uppercase
+}
+
+#nav-menu a:hover{
+    color: rgb(42, 177, 187);
+}
+
+.page-content{
+    margin: 50px;
+}
+
+.page-content p{
+    text-align: justify;
+}
+
+.link-container{
+    background-color: rgb(255, 149, 215);
+    padding: 10px;
+    text-align: center;
+}
+
+.link-container a{
+    margin-left: 10px;
+    margin-right: 10px;
+    text-decoration: none;
+}
