@@ -13,7 +13,7 @@ fetch("./assets/settings/setting.json")
 }
 
 function loadPages() {
-    fetch("./assets/settings/pages.json")
+    fetch("./assets/settings/pages_new_new_new.json")
         .then(resp_pages => resp_pages.json())
         .then(configurePages)
         .catch(error => console.log(error));
@@ -71,16 +71,23 @@ function configurePages(pageSetting) {
         id = "p1"
     }
     const page = pageSetting.filter(p => p.id === id)[0];
-    generatePageContent(page);
+    createPage(page);
 }
 
-function generatePageContent(page){
+function createPage(page){
+    //const container = document.getElementById('page-container');
+    // for (const element of page.content) {
+    //     const htmlElement = createHtmlElement(element);
+    //     container.appendChild(htmlElement);
+    // }
+    //container.innerHTML = marked.parse(page.content);
+    fetch(page.contentUrl).then(res => res.text()).then(content)
+}
 
+function content(text) {
+    console.log(text);
     const container = document.getElementById('page-container');
-    for (const element of page.content) {
-        const newElement = createHtmlElement(element)
-        container.appendChild(newElement);
-    }
+    container.innerHTML = marked.parse(text);
 }
 
 function setNavMenu(pageSetting) {
